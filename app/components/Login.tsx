@@ -3,6 +3,7 @@
 import Grid from '@mui/material/Grid'
 import { Button } from '@mui/material'
 import { FaSpotify } from 'react-icons/fa'
+import { signIn } from 'next-auth/react'
 
 export default function Login() {
   return (
@@ -14,7 +15,7 @@ export default function Login() {
         </h1>
       </Grid>
       <Grid size={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-        <Button variant="outlined">Sign in Spotify</Button>
+        <Button variant="outlined" onClick={() => signIn()}>Sign in Spotify</Button>
       </Grid>
     </Grid>
   )
