@@ -10,13 +10,11 @@ import { get_songs } from "../lib/chatgpt"
 import { create_playlist } from "../lib/spotify"
 
 import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import MenuItem from '@mui/material/MenuItem'
-import Select, { SelectChangeEvent } from '@mui/material/Select'
-import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 
 import { DataGrid, GridColDef } from '@mui/x-data-grid'
+import { Button, Input, Select } from 'antd'
+
 
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
@@ -31,6 +29,9 @@ const columns: GridColDef[] = [
 
 ]
 
+const { Option } = Select;
+
+
 export default function Main() {
     const [loading, setLoading] = useState(false)
     const [songs, setSongs] = useState([])
@@ -39,8 +40,8 @@ export default function Main() {
     const { data: session } = useSession()
 
     // hooks for state management
-    const handleChangeValue = (event: SelectChangeEvent) => {
-        setCount(event.target.value as string)
+    const handleChangeValue = (value: string) => {
+        setCount(value)
     }
     
     const handleChangeStatement = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -101,54 +102,85 @@ export default function Main() {
     
 
     return (
-  <>
-    <Box textAlign='center'>
-      <Typography variant="h4" gutterBottom>Spotify Playlist Generator <FaSpotify color="green" /></Typography>
-      <Typography variant="body1" gutterBottom>
-        Username: { session && session.user?.name || 'unknown'}
-      </Typography>
-    </Box>
-    <Box display="flex" justifyContent="center"> 
-      <TextField sx={{ m: 1 }} style = {{width: 500}} label="Statement" variant="outlined" placeholder="Eg: Dinner party music with friends" onChange={handleChangeStatement} />
-      <Select
-        sx={{ m: 1 }}
-        value={count}
-        label="Count"
-        onChange={handleChangeValue}
-      >
-        <MenuItem value={10}>10</MenuItem>
-        <MenuItem value={20}>20</MenuItem>
-        <MenuItem value={30}>30</MenuItem>
-        <MenuItem value={50}>50</MenuItem>
-
-      </Select>
-    </Box>
-    <Box display="flex" justifyContent="center">      
-      <Button sx={{ m: 1 }} variant="outlined" onClick={() => generate()}>Generate</Button>
-      <Button sx={{ m: 1 }} variant="outlined" onClick={() => createPlaylist()}>Create a playlist</Button>
-      <Button sx={{ m: 1 }} variant="outlined" onClick={() => signOut()}>Sign out Spotify</Button>
-    </Box>
-    <Box display="flex" justifyContent="center">
-      {
-        loading
-        ? <Typography>Generating playlist, please wait...</Typography>
-        : <div style={{ height: '400px', width: '800px' }}>
-            <DataGrid
-              rows={songs}
-              columns={columns}
-              initialState={{
-                pagination: {
-                  paginationModel: { page: 0, pageSize: 5 },
-                },
-              }}
-              pageSizeOptions={[5, 10, 20, 30]}
-            />
-          </div>
-      }
-    </Box>
-    <ToastContainer/>
-  </>
+  <Box
+    sx={{
+      minHeight: '100vh',            
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',      
+      alignItems: 'center',           
+      gap: 3,                         
+      backgroundColor: '#121212',
+      padding: 2,                  
+    }}
+  >
+  <Box textAlign="center">
+    <Typography
+      variant="h4"
+      sx={{
+        color: 'white',
+        fontWeight: 'bold',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: 1,
+      }}
+    >
+      Spotify Playlist Generator <FaSpotify color="#1DB954" />
+    </Typography>
+    <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
+      Signed in as: {session?.user?.name || 'unknown'}
+    </Typography>
+  </Box>
+  <Box display="flex" justifyContent="center" gap={2} flexWrap="wrap">
+  <Input
+      style={{ width: 500 }}
+      placeholder="Eg: Dinner party music with friends"
+      onChange={handleChangeStatement}
+    />
+  <Select
+  value={count}
+  onChange={handleChangeValue}
+  style={{ minWidth: 120, color: 'grey', backgroundColor: '#fffbfbff', }}
+  popupStyle={{ backgroundColor: '#ffffffff', color: 'white' }} 
+  >
+    <Option value={10}>10</Option>
+    <Option value={20}>20</Option>
+    <Option value={30}>30</Option>
+    <Option value={50}>50</Option>
+  </Select>
+  </Box>
+  <Box display="flex" justifyContent="center" gap={2} flexWrap="wrap">
+    <Button className="spotify-button" onClick={() => generate()}>
+      Generate
+    </Button>
+    <Button className="spotify-button" onClick={() => createPlaylist()}>
+      Create a playlist
+    </Button>
+    <Button className="spotify-button" onClick={() => signOut()}>
+      Sign out Spotify
+    </Button>
+  </Box>
+  <Box display="flex" justifyContent="center" mt={2}>
+    {loading ? (
+      <Typography color="white">Generating playlist, please wait...</Typography>
+    ) : (
+      <div style={{ height: '400px', width: '800px' }}>
+        <DataGrid
+          rows={songs}
+          columns={columns}
+          initialState={{
+            pagination: {
+              paginationModel: { page: 0, pageSize: 5 },
+            },
+          }}
+          pageSizeOptions={[5, 10, 20, 30]}
+        />
+      </div>
+    )}
+  </Box>
+  <ToastContainer />
+</Box>
 )
-
 }
 
