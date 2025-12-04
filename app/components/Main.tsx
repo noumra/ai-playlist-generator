@@ -5,21 +5,18 @@ import { FaSpotify } from "react-icons/fa"
 import { useSession, signOut} from 'next-auth/react'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-
 import { get_songs } from "../lib/chatgpt"
 import { create_playlist } from "../lib/spotify"
-
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-
 import { DataGrid, GridColDef } from '@mui/x-data-grid'
 import { Button, Input, Select } from 'antd'
-
 
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
+
 
 const columns: GridColDef[] = [
     { field: 'title', headerName: 'Title', width: 225},
