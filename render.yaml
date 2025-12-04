@@ -9,3 +9,5 @@ services:
   envVars:
   - key: NODE_ENV
     value: productio
+  - key: NEXT_BUILDER
+    value: webpack
