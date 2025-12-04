@@ -5,8 +5,6 @@ import { FaSpotify } from 'react-icons/fa'
 import { SiOpenai } from 'react-icons/si'
 import { signIn } from 'next-auth/react'
 import { Button } from 'antd'
-import { Typography, Tooltip } from 'antd'
-import { InfoCircleOutlined } from '@ant-design/icons'
 
 export default function Login() {
   return (

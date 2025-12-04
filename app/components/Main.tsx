@@ -7,10 +7,8 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { get_songs } from "../lib/chatgpt"
 import { create_playlist } from "../lib/spotify"
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
-import { DataGrid, GridColDef } from '@mui/x-data-grid'
-import { Button, Input, Select } from 'antd'
+import { Button, Input, Select, Typography} from 'antd'
+import PlaylistTable from "./PlaylistTable"
 
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
@@ -18,13 +16,6 @@ import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
 
 
-const columns: GridColDef[] = [
-    { field: 'title', headerName: 'Title', width: 225},
-    { field: 'artist', headerName: 'Artist', width: 225},
-    { field: 'album', headerName: 'Album', width: 225},
-    { field: 'duration', headerName: 'Duration', width: 225}
-
-]
 
 const { Option } = Select;
 
@@ -98,38 +89,30 @@ export default function Main() {
     
     
 
+
+
     return (
-  <Box
-    sx={{
-      minHeight: '100vh',            
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',      
-      alignItems: 'center',           
-      gap: 3,                         
-      backgroundColor: '#121212',
-      padding: 2,                  
-    }}
+  <div
+  style={{
+    minHeight: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 24, 
+    backgroundColor: '#121212',
+    padding: 16,
+  }}
   >
-  <Box textAlign="center">
-    <Typography
-      variant="h4"
-      sx={{
-        color: 'white',
-        fontWeight: 'bold',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: 1,
-      }}
-    >
+  <div style={{ textAlign: 'center' }}>
+    <Typography.Title level={3} style={{ color: 'white', display: 'flex', alignItems: 'center', gap: 8 }}>
       Spotify Playlist Generator <FaSpotify color="#1DB954" />
-    </Typography>
-    <Typography variant="body1" sx={{ color: '#b3b3b3' }}>
+    </Typography.Title>
+    <Typography.Text style={{ color: '#b3b3b3' }}>
       Signed in as: {session?.user?.name || 'unknown'}
-    </Typography>
-  </Box>
-  <Box display="flex" justifyContent="center" gap={2} flexWrap="wrap">
+    </Typography.Text>
+  </div>
+  <div style={{ display: 'flex', justifyContent: 'center', gap: 16, flexWrap: 'wrap' }}>
   <Input
       style={{ width: 500 }}
       placeholder="Eg: Dinner party music with friends"
@@ -146,8 +129,8 @@ export default function Main() {
     <Option value={30}>30</Option>
     <Option value={50}>50</Option>
   </Select>
-  </Box>
-  <Box display="flex" justifyContent="center" gap={2} flexWrap="wrap">
+  </div>
+  <div style={{ display: 'flex', justifyContent: 'center', gap: 16, flexWrap: 'wrap' }}>
     <Button className="spotify-button" onClick={() => generate()}>
       Generate
     </Button>
@@ -157,27 +140,10 @@ export default function Main() {
     <Button className="spotify-button" onClick={() => signOut()}>
       Sign out Spotify
     </Button>
-  </Box>
-  <Box display="flex" justifyContent="center" mt={2}>
-    {loading ? (
-      <Typography color="white">Generating playlist, please wait...</Typography>
-    ) : (
-      <div style={{ height: '400px', width: '800px' }}>
-        <DataGrid
-          rows={songs}
-          columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
-            },
-          }}
-          pageSizeOptions={[5, 10, 20, 30]}
-        />
-      </div>
-    )}
-  </Box>
+  </div>
+  <PlaylistTable loading={loading} songs={songs} />
   <ToastContainer />
-</Box>
+</div>
 )
 }
 
