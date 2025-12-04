@@ -18,6 +18,9 @@ App can be accessed at: https://ai-playlist-generator-1y3v.onrender.com/
 ### Playlist creation 
 ![Creating playlist page](resources/create.png)
 
+### Playlist 
+![Playlist on Spotify](resources/playlist.png)
+
 
 
 ---
